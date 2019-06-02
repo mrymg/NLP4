@@ -1,5 +1,12 @@
 import json
 import re
+# import dynet as dy
+
+###################################################################
+###################################################################
+# We're getting file and make bigram and create uniquelists.
+###################################################################
+###################################################################
 
 
 def ngram(s, n):
@@ -7,7 +14,7 @@ def ngram(s, n):
     s = s.lower()
 
     # Replace all none alphanumeric characters with spaces
-    s = re.sub(r'[^a-zA-Z0-9\s]', ' ', s)
+    s = re.sub(r'[^\a-zA-Z0-9\s]', ' ', s)
 
     # Break sentence in the token, remove empty tokens
     tokens = [token for token in s.split(" ") if token != ""]
@@ -18,11 +25,25 @@ def ngram(s, n):
     return [" ".join(ngram) for ngram in ngrams]
 
 mypoem = []
-
+myBigram=[]
 filepath = "unim_poem.json"
 with open(filepath, 'r') as dataset:
-    file = json.load(dataset)
+    file = json.load(dataset)[:5000]
     for p in file:
         p['poem']= '<start> '+ p['poem'] + ' <end>'
+        p['poem']= str(p['poem']).replace("\n"," *n ")
+        myBigram += ngram(str(p['poem']), 2)
 
-        print(p)
+cogul=[]
+for i in myBigram:
+   cogul.append(i.split(' ')[0])
+   cogul.append(i.split(' ')[1])
+
+tekil= list(set(cogul))
+print(len(tekil))
+###################################################################
+###################################################################
+####        Creating the one-hot vector.
+
+
+
