@@ -17,11 +17,12 @@ def ngram(s, n):
     ngrams = zip(*[tokens[i:] for i in range(n)])
     return [" ".join(ngram) for ngram in ngrams]
 
-mypoem = {}
+mypoem = []
 
 filepath = "unim_poem.json"
 with open(filepath, 'r') as dataset:
     file = json.load(dataset)
     for p in file:
-        a= p["poem"].split("\n")
-        mypoem[p["id"]] = a
+        p['poem']= '<start> '+ p['poem'] + ' <end>'
+
+        print(p)
